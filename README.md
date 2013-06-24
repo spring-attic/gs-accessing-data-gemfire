@@ -292,7 +292,7 @@ public class Application {
 }
 ```
 
-In the configuration, you need to add the `@@EnableGemfireRepositories` annotation.
+In the configuration, you need to add the `@EnableGemfireRepositories` annotation.
 
 One piece that's missing is a Gemfire cache. That is the target place to store all data. For that, you have Spring Data Gemfire's convenient `CacheFactoryBean`.
 
