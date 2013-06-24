@@ -11,12 +11,7 @@ public class Person {
 	public int age;
 
 	@PersistenceConstructor
-	public Person() { 
-		this.name = "";
-	}
-	
 	public Person(String name, int age) {
-		this();
 		this.name = name; 
 		this.age = age;
 	}
