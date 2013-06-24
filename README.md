@@ -294,7 +294,7 @@ public class Application {
 
 In the configuration, you need to add the `@EnableGemfireRepositories` annotation.
 
-One piece that's missing is a Gemfire cache. That is the target place to store all data. For that, you have Spring Data Gemfire's convenient `CacheFactoryBean`.
+One piece that's required is a Gemfire cache. That is the target place to store all data. For that, you have Spring Data Gemfire's convenient `CacheFactoryBean`.
 
 > **Note:** In this guide, the cache is created locally using built-in components and an evaluation license. For a production solution, it's recommended to get the production version where you can create distributed caches and regions that spread across multiple nodes.
 
@@ -377,6 +377,6 @@ With the debug levels of Spring Data Gemfire turned up, you are also getting a g
 
 Summary
 -------
-Congratulations! You just setup an embedded Gemfire server, stored some simple, related entities, and developed some quick queries.
+Congratulations! You just setup an embedded Gemfire server, stored some simple entities, and developed some quick queries.
 
 [zip]: https://github.com/springframework-meta/gs-accessing-data-gemfire/archive/master.zip
