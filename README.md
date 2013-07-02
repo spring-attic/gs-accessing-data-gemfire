@@ -107,6 +107,8 @@ In a project directory of your choosing, create the following subdirectory struc
     </pluginRepositories>
 </project>
 ```
+    
+{!snippet:bootstrap-starter-pom-disclaimer}
 
 This guide also uses log4j with certain log levels turned up so you can see what GemFire and Spring Data GemFire are doing.
 
@@ -379,4 +381,4 @@ Summary
 -------
 Congratulations! You set up an embedded GemFire server, stored simple entities, and developed quick queries.
 
-[zip]: https://github.com/springframework-meta/gs-accessing-data-GemFire/archive/master.zip
+[zip]: https://github.com/springframework-meta/gs-accessing-data-gemfire/archive/master.zip
