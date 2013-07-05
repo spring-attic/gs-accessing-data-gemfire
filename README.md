@@ -1,3 +1,4 @@
+
 Getting Started: Accessing Data with GemFire
 ============================================
 
@@ -27,11 +28,12 @@ To **start from scratch**, move on to [Set up the project](#scratch).
 To **skip the basics**, do the following:
 
  - [Download][zip] and unzip the source repository for this guide, or clone it using [git](/understanding/git):
-`git clone https://github.com/springframework-meta/{@project-name}.git`
- - cd into `{@project-name}/initial`
- - Jump ahead to [Create a resource representation class](#initial).
+`git clone https://github.com/springframework-meta/gs-accessing-data-gemfire.git`
+ - cd into `gs-accessing-data-gemfire/initial`
+ - Jump ahead to [Define a simple entity](#initial).
 
-**When you're finished**, you can check your results against the code in `{@project-name}/complete`.
+**When you're finished**, you can check your results against the code in `gs-accessing-data-gemfire/complete`.
+[zip]: https://github.com/springframework-meta/gs-accessing-data-gemfire/archive/master.zip
 
 
 <a name="scratch"></a>
@@ -59,7 +61,7 @@ In a project directory of your choosing, create the following subdirectory struc
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>gs-acessing-data-gemfire-initial</artifactId>
+    <artifactId>gs-acessing-data-gemfire-complete</artifactId>
     <version>0.1.0</version>
 
     <dependencies>
@@ -80,6 +82,32 @@ In a project directory of your choosing, create the following subdirectory struc
         </dependency>
     </dependencies>
     
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>hello.Application</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
     <!-- TODO: remove once bootstrap goes GA -->
     <repositories>
         <repository>
@@ -107,8 +135,6 @@ In a project directory of your choosing, create the following subdirectory struc
     </pluginRepositories>
 </project>
 ```
-    
-{!snippet:bootstrap-starter-pom-disclaimer}
 
 This guide also uses log4j with certain log levels turned up so you can see what GemFire and Spring Data GemFire are doing.
 
@@ -347,15 +373,19 @@ To build this application, you need to add some extra bits to your pom.xml file.
 	</build>
 ```
 
-With the `maven-shade-plugin` added in, you can now generate a runnable jar file:
+The [Maven Shade plugin][maven-shade-plugin] extracts classes from all jars on the classpath and builds a single "über-jar", which makes it more convenient to execute and transport your service.
+
+Now run the following to produce a single executable JAR file containing all necessary dependency classes and resources:
 
     mvn package
+
+[maven-shade-plugin]: https://maven.apache.org/plugins/maven-shade-plugin
     
 Run the application
 -----------------------
 Run your service with `java -jar` at the command line:
 
-    java -jar target/gs-accessing-data-GemFire-complete-0.1.0.jar
+    java -jar target/gs-accessing-data-gemfire-complete-0.1.0.jar
     
 You should see something like this (with other stuff like queries as well):
 ```
@@ -380,5 +410,3 @@ That isn't everything you'll see. With the debug levels of Spring Data GemFire t
 Summary
 -------
 Congratulations! You set up an embedded GemFire server, stored simple entities, and developed quick queries.
-
-[zip]: https://github.com/springframework-meta/gs-accessing-data-gemfire/archive/master.zip
