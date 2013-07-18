@@ -27,7 +27,7 @@ Set up the project
 
 ### Create a Maven POM
 
-    <@snippet path="pom.xml" prefix="complete"/>
+    <@snippet path="pom.xml" prefix="initial"/>
 
 This guide also uses log4j with certain log levels turned up so you can see what GemFire and Spring Data GemFire are doing.
 
