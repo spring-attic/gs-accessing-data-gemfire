@@ -1,8 +1,5 @@
 <#assign project_id="gs-accessing-data-gemfire">
 
-Getting Started: Accessing Data with GemFire
-============================================
-
 What you'll build
 -----------------
 

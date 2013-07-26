@@ -1,7 +1,4 @@
 
-Getting Started: Accessing Data with GemFire
-============================================
-
 What you'll build
 -----------------
 
