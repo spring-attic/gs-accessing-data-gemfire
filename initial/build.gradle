@@ -20,6 +20,7 @@ jar {
 repositories {
     mavenCentral()
     maven { url "http://repo.springsource.org/libs-snapshot" }
+    maven { url "http://dist.gemstone.com.s3.amazonaws.com/maven/release" }
 }
 
 dependencies {
