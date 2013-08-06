@@ -1,10 +1,13 @@
-#!/bin/bash
-
+#!/bin/sh
 cd $(dirname $0)
-cd ../initial
-mvn clean package
-./gradlew clean build
-
 cd ../complete
 mvn clean package
+rm -rf target
 ./gradlew build
+rm -rf build
+cd ../initial
+mvn clean package
+rm -rf target
+./gradlew build
+rm -rf build
+exit $ret
