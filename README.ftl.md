@@ -1,9 +1,10 @@
 <#assign project_id="gs-accessing-data-gemfire">
+This guide walks you through the process of building an application with GemFire's data fabric.
 
 What you'll build
 -----------------
 
-This guide walks you through the process of building an application with GemFire's data fabric using the powerful Spring Data GemFire library to store and retrieve POJOs.
+You will use the powerful Spring Data GemFire library to store and retrieve POJOs.
 
 What you'll need
 ----------------
