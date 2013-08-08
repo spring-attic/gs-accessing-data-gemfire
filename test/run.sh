@@ -1,24 +1,9 @@
-#!/bin/sh -x
+#!/bin/sh
 cd $(dirname $0)
 
 cd ../complete
 
-which javac
-javac -version
-which mvn
-mvn --version
-env
-echo $JAVA_HOME
-ls -l `which javac`
-ls $JAVA_HOME/bin
-
-dpkg -l | grep openjdk
-
-uname -a
-
-lsb_release -a
-
-mvn -e clean package
+mvn clean package
 ret=$?
 if [ $ret -ne 0 ]; then
 exit $ret
