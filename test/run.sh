@@ -12,8 +12,7 @@ echo $JAVA_HOME
 ls -l `which javac`
 ls $JAVA_HOME/bin
 
-mvn help:effective-settings
-mvn help:effective-pom
+dpkg -l | grep openjdk
 
 mvn -e clean package
 ret=$?
