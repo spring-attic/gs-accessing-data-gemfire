@@ -3,6 +3,8 @@ cd $(dirname $0)
 
 cd ../complete
 
+which javac
+javac -version
 which mvn
 mvn --version
 ps -ef | grep java
