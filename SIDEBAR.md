@@ -8,9 +8,9 @@ There's more to data persistence than what is presented here. You may want to co
 * [Accessing Data with JPA][gs-accessing-data-jpa]
 * [Accessing Data with Neo4j][gs-accessing-data-neo4j]
 
-[gs-accessing-data-jpa]: /guides/gs/accessing-data-jpa/content
-[gs-relational-data-access]: /guides/gs/relational-data-access/content
-[gs-accessing-data-neo4j]: /guides/gs/accessing-data-neo4j/content
+[gs-accessing-data-jpa]: /guides/gs/accessing-data-jpa/
+[gs-relational-data-access]: /guides/gs/relational-data-access/
+[gs-accessing-data-neo4j]: /guides/gs/accessing-data-neo4j/
 
 ### Tutorials
 
