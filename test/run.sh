@@ -10,7 +10,7 @@ ls -a
 cat .classpath
 cat .project
 
-mvn clean package
+mvn -e clean package
 ret=$?
 if [ $ret -ne 0 ]; then
 exit $ret
