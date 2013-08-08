@@ -9,6 +9,8 @@ which mvn
 mvn --version
 env
 echo $JAVA_HOME
+ls -l `which javac`
+ls $JAVA_HOME/bin
 
 mvn -e clean package
 ret=$?
