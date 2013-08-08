@@ -7,10 +7,8 @@ which javac
 javac -version
 which mvn
 mvn --version
-ps -ef | grep java
-ls -a
-cat .classpath
-cat .project
+env
+echo $JAVA_HOME
 
 mvn -e clean package
 ret=$?
