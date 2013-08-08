@@ -12,6 +12,9 @@ echo $JAVA_HOME
 ls -l `which javac`
 ls $JAVA_HOME/bin
 
+mvn help:effective-settings
+mvn help:effective-pom
+
 mvn -e clean package
 ret=$?
 if [ $ret -ne 0 ]; then
