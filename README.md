@@ -64,19 +64,19 @@ In a project directory of your choosing, create the following subdirectory struc
 
     <dependencies>
         <dependency>
-        	<groupId>org.springframework.data</groupId>
-        	<artifactId>spring-data-gemfire</artifactId>
-        	<version>1.3.0.RELEASE</version>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-gemfire</artifactId>
+            <version>1.3.0.RELEASE</version>
         </dependency>
         <dependency>
-        	 <groupId>org.slf4j</groupId>
-        	 <artifactId>slf4j-log4j12</artifactId>
-        	 <version>1.7.5</version>
+             <groupId>org.slf4j</groupId>
+             <artifactId>slf4j-log4j12</artifactId>
+             <version>1.7.5</version>
         </dependency>
         <dependency>
-        	<groupId>com.gemstone.gemfire</groupId>
-        	<artifactId>gemfire</artifactId>
-        	<version>7.0.1</version>
+            <groupId>com.gemstone.gemfire</groupId>
+            <artifactId>gemfire</artifactId>
+            <version>7.0.1</version>
         </dependency>
     </dependencies>
     
@@ -89,11 +89,12 @@ In a project directory of your choosing, create the following subdirectory struc
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-		<repository>
-			<id>gemstone</id>
-			<url>http://dist.gemstone.com.s3.amazonaws.com/maven/release/</url>
-		</repository>
+        <repository>
+            <id>gemstone</id>
+            <url>http://dist.gemstone.com.s3.amazonaws.com/maven/release/</url>
+        </repository>
     </repositories>
+
     <pluginRepositories>
         <pluginRepository>
             <id>spring-snapshots</id>
@@ -104,6 +105,7 @@ In a project directory of your choosing, create the following subdirectory struc
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
 </project>
 ```
 
