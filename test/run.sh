@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 cd $(dirname $0)
 
 cd ../complete
@@ -6,6 +6,9 @@ cd ../complete
 which mvn
 mvn --version
 ps -ef | grep java
+ls -a
+cat .classpath
+cat .project
 
 mvn clean package
 ret=$?
