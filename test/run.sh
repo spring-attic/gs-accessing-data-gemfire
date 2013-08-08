@@ -14,6 +14,10 @@ ls $JAVA_HOME/bin
 
 dpkg -l | grep openjdk
 
+uname -a
+
+lsb_release -a
+
 mvn -e clean package
 ret=$?
 if [ $ret -ne 0 ]; then
