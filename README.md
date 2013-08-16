@@ -11,9 +11,10 @@ What you'll need
  - About 15 minutes
  - A favorite text editor or IDE
  - [JDK 6][jdk] or later
- - [Maven 3.0][mvn] or later
+ - [Gradle 1.7+][gradle] or [Maven 3.0+][mvn]
 
 [jdk]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+[gradle]: http://www.gradle.org/
 [mvn]: http://maven.apache.org/download.cgi
 
 How to complete this guide
@@ -39,7 +40,7 @@ To **skip the basics**, do the following:
 Set up the project
 ------------------
 
-First you set up a basic build script. You can use any build system you like when building apps with Spring, but the code you need to work with [Maven](https://maven.apache.org) and [Gradle](http://gradle.org) is included here. If you're not familiar with either, refer to [Building Java Projects with Maven](/guides/gs/maven) or [Building Java Projects with Gradle](/guides/gs/gradle/).
+First you set up a basic build script. You can use any build system you like when building apps with Spring, but the code you need to work with [Gradle](http://gradle.org) and [Maven](https://maven.apache.org) is included here. If you're not familiar with either, refer to [Building Java Projects with Gradle](/guides/gs/gradle/) or [Building Java Projects with Maven](/guides/gs/maven).
 
 ### Create the directory structure
 
@@ -50,73 +51,42 @@ In a project directory of your choosing, create the following subdirectory struc
             └── java
                 └── hello
 
-### Create a Maven POM
+### Create a Gradle build file
 
-`pom.xml`
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+`build.gradle`
+```gradle
+buildscript {
+    repositories {
+        maven { url "http://repo.springsource.org/libs-snapshot" }
+        mavenLocal()
+    }
+}
 
-    <groupId>org.springframework</groupId>
-    <artifactId>gs-acessing-data-gemfire</artifactId>
-    <version>0.1.0</version>
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-gemfire</artifactId>
-            <version>1.3.0.RELEASE</version>
-        </dependency>
-        <dependency>
-             <groupId>org.slf4j</groupId>
-             <artifactId>slf4j-log4j12</artifactId>
-             <version>1.7.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.gemstone.gemfire</groupId>
-            <artifactId>gemfire</artifactId>
-            <version>7.0.1</version>
-        </dependency>
-    </dependencies>
+jar {
+    baseName = 'gs-accessing-data-gemfire'
+    version =  '0.1.0'
+}
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-            </plugin>
-        </plugins>
-    </build>
-    
-    <repositories>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>http://repo.springsource.org/libs-snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>gemstone</id>
-            <url>http://dist.gemstone.com.s3.amazonaws.com/maven/release/</url>
-        </repository>
-    </repositories>
+repositories {
+    mavenCentral()
+    maven { url "http://repo.springsource.org/libs-snapshot" }
+    maven { url "http://dist.gemstone.com.s3.amazonaws.com/maven/release" }
+}
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>http://repo.springsource.org/libs-snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+dependencies {
+    compile("org.springframework.data:spring-data-gemfire:1.3.0.RELEASE")
+    compile("org.slf4j:slf4j-log4j12:1.7.5")
+    compile("com.gemstone.gemfire:gemfire:7.0.1")
+    testCompile("junit:junit:4.11")
+}
 
-</project>
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.7'
+}
 ```
 
 This guide also uses log4j with certain log levels turned up so you can see what GemFire and Spring Data GemFire are doing.
@@ -323,57 +293,49 @@ In this case, you are creating three local `Person`s, **Alice**, **Baby Bob**, a
 
 Now you run several queries. The first looks up everyone by name. Then you execute a handful of queries to find adults, babies, and teens, all using the age attribute. With the logging turned up, you can see the queries Spring Data GemFire writes on your behalf.
 
-Build the application
-------------------------
+### Build an executable JAR
 
-To build this application, you need to add some extra bits to your pom.xml file.
+Now that your `Application` class is ready, you simply instruct the build system to create a single, executable jar containing everything. This makes it easy to ship, version, and deploy the service as an application throughout the development lifecycle, across different environments, and so forth.
 
-```xml
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.1</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>hello.Application</mainClass>
-								</transformer>
-							</transformers>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+Add the following configuration to your existing Gradle build file:
+
+`build.gradle`
+```groovy
+buildscript {
+    ...
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:0.5.0.BUILD-SNAPSHOT")
+    }
+}
+
+apply plugin: 'spring-boot'
 ```
 
-The [Maven Shade plugin][maven-shade-plugin] extracts classes from all jars on the classpath and builds a single "über-jar", which makes it more convenient to execute and transport your service.
+The [Spring Boot gradle plugin][spring-boot-gradle-plugin] collects all the jars on the classpath and builds a single "über-jar", which makes it more convenient to execute and transport your service.
+It also searches for the `public static void main()` method to flag as a runnable class.
 
-Now run the following to produce a single executable JAR file containing all necessary dependency classes and resources:
+Now run the following command to produce a single executable JAR file containing all necessary dependency classes and resources:
 
 ```sh
-$ mvn package
+$ ./gradlew build
 ```
 
-[maven-shade-plugin]: https://maven.apache.org/plugins/maven-shade-plugin
+Now you can run the JAR by typing:
+
+```sh
+$ java -jar build/libs/gs-accessing-data-gemfire-0.1.0.jar
+```
+
+[spring-boot-gradle-plugin]: https://github.com/SpringSource/spring-boot/tree/master/spring-boot-tools/spring-boot-gradle-plugin
 
 > **Note:** The procedure above will create a runnable JAR. You can also opt to [build a classic WAR file](/guides/gs/convert-jar-to-war/) instead.
-    
-Run the application
+
+Run the service
 -------------------
-Run your application with `java -jar` at the command line:
+Run your service at the command line:
 
 ```sh
-$ java -jar target/gs-accessing-data-gemfire-0.1.0.jar
+$ ./gradlew clean build && java -jar build/libs/gs-accessing-data-gemfire-0.1.0.jar
 ```
 
     

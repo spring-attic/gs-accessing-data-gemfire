@@ -23,9 +23,9 @@ Set up the project
 
 <@create_directory_structure_hello/>
 
-### Create a Maven POM
+### Create a Gradle build file
 
-    <@snippet path="pom.xml" prefix="initial"/>
+    <@snippet path="build.gradle" prefix="initial"/>
 
 This guide also uses log4j with certain log levels turned up so you can see what GemFire and Spring Data GemFire are doing.
 
@@ -96,9 +96,11 @@ In this case, you are creating three local `Person`s, **Alice**, **Baby Bob**, a
 
 Now you run several queries. The first looks up everyone by name. Then you execute a handful of queries to find adults, babies, and teens, all using the age attribute. With the logging turned up, you can see the queries Spring Data GemFire writes on your behalf.
 
-## <@build_the_application/>
-    
-<@run_the_application/>
+<@build_an_executable_jar_subhead/>
+
+<@build_an_executable_jar_with_gradle/>
+
+<@run_the_application_with_gradle/>
     
 You should see something like this (with other stuff like queries as well):
 ```
