@@ -96,7 +96,7 @@ In this case, you are creating three local `Person`s, **Alice**, **Baby Bob**, a
 
 Now you run several queries. The first looks up everyone by name. Then you execute a handful of queries to find adults, babies, and teens, all using the age attribute. With the logging turned up, you can see the queries Spring Data GemFire writes on your behalf.
 
-<@build_an_executable_jar_subhead/>
+<@build_an_executable_jar_mainhead/>
 
 <@build_an_executable_jar_with_gradle/>
 
