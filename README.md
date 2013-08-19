@@ -293,7 +293,8 @@ In this case, you are creating three local `Person`s, **Alice**, **Baby Bob**, a
 
 Now you run several queries. The first looks up everyone by name. Then you execute a handful of queries to find adults, babies, and teens, all using the age attribute. With the logging turned up, you can see the queries Spring Data GemFire writes on your behalf.
 
-### Build an executable JAR
+Build an executable JAR
+-----------------------
 
 Now that your `Application` class is ready, you simply instruct the build system to create a single, executable jar containing everything. This makes it easy to ship, version, and deploy the service as an application throughout the development lifecycle, across different environments, and so forth.
 
