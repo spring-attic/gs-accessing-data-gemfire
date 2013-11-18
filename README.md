@@ -82,7 +82,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.data:spring-data-gemfire:1.3.0.RELEASE")
+    compile("org.springframework.data:spring-data-gemfire:1.3.3.RELEASE")
     compile("org.slf4j:slf4j-log4j12:1.7.5")
     compile("com.gemstone.gemfire:gemfire:7.0.1")
     testCompile("junit:junit:4.11")
