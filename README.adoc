@@ -81,6 +81,7 @@ include::complete/src/main/java/hello/PersonRepository.java[]
 You can define other queries as needed by simply declaring their method signature. In this case, you add `findByName`, which essentially seeks nodes of type `Person` and find the one that matches on `name`.
 
 You also have:
+
 - `findByAgeGreaterThan` to find people above a certain age
 - `findByAgeLessThan` to find people below a certain age
 - `findByAgeGreaterThanAndAgeLessThan` to find people in a certain range
