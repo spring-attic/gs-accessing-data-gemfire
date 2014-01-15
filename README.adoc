@@ -1,3 +1,7 @@
+---
+tags: [gemfire, data]
+projects: [spring-data-gemfire]
+---
 :toc:
 :icons: font
 :source-highlighter: prettify
