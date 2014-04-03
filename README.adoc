@@ -27,7 +27,6 @@ include::https://raw.github.com/spring-guides/getting-started-macros/master/buil
 
 include::https://raw.github.com/spring-guides/getting-started-macros/master/create_directory_structure_hello.adoc[]
 
-
 include::https://raw.github.com/spring-guides/getting-started-macros/master/create_both_builds.adoc[]
 
 `build.gradle`
@@ -36,6 +35,8 @@ include::https://raw.github.com/spring-guides/getting-started-macros/master/crea
 ----
 include::initial/build.gradle[]
 ----
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/spring-boot-gradle-plugin.adoc[]
 
 [[initial]]
 == Define a simple entity
