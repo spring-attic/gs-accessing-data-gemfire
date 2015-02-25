@@ -1,6 +1,8 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url "https://repo.spring.io/libs-release" }
+
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE")
@@ -19,11 +21,11 @@ jar {
 
 repositories {
     mavenCentral()
+    maven { url "https://repo.spring.io/libs-release" }
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-gemfire")
-    testCompile("junit:junit")
 }
 
 task wrapper(type: Wrapper) {
