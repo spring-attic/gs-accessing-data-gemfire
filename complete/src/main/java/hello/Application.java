@@ -1,6 +1,7 @@
 package hello;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -15,23 +16,32 @@ import com.gemstone.gemfire.cache.GemFireCache;
 
 @Configuration
 @EnableGemfireRepositories
+@SuppressWarnings("unused")
 public class Application implements CommandLineRunner {
 
+    @Bean Properties gemfireProperties() {
+        Properties gemfireProperties = new Properties();
+        gemfireProperties.setProperty("name", "DataGemFireRestApplication");
+        gemfireProperties.setProperty("mcast-port", "0");
+        gemfireProperties.setProperty("log-level", "config");
+        return gemfireProperties;
+    }
+
     @Bean
-    CacheFactoryBean cacheFactoryBean() {
-        return new CacheFactoryBean();
+    CacheFactoryBean gemfireCache() {
+        CacheFactoryBean gemfireCache = new CacheFactoryBean();
+        gemfireCache.setProperties(gemfireProperties());
+        gemfireCache.setUseBeanFactoryLocator(false);
+        return gemfireCache;
     }
 
     @Bean
     LocalRegionFactoryBean<String, Person> localRegionFactory(final GemFireCache cache) {
-        return new LocalRegionFactoryBean<String, Person>() {
-
-            {
-                setCache(cache);
-                setName("hello");
-                setClose(false);
-            }
-        };
+        LocalRegionFactoryBean<String, Person> helloRegion = new LocalRegionFactoryBean<>();
+        helloRegion.setCache(cache);
+        helloRegion.setName("hello");
+        helloRegion.setPersistent(false);
+        return helloRegion;
     }
 
     @Autowired
@@ -74,6 +84,9 @@ public class Application implements CommandLineRunner {
     }
 
     public static void main(String[] args) throws IOException {
-        SpringApplication.run(Application.class, args);
+        SpringApplication application = new SpringApplication(Application.class);
+        application.setWebEnvironment(false);
+        application.run(args);
     }
+
 }
