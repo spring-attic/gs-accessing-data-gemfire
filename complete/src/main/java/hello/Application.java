@@ -19,7 +19,8 @@ import com.gemstone.gemfire.cache.GemFireCache;
 @SuppressWarnings("unused")
 public class Application implements CommandLineRunner {
 
-    @Bean Properties gemfireProperties() {
+    @Bean
+    Properties gemfireProperties() {
         Properties gemfireProperties = new Properties();
         gemfireProperties.setProperty("name", "DataGemFireAccessApplication");
         gemfireProperties.setProperty("mcast-port", "0");
