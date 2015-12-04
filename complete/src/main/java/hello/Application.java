@@ -21,7 +21,7 @@ public class Application implements CommandLineRunner {
 
     @Bean Properties gemfireProperties() {
         Properties gemfireProperties = new Properties();
-        gemfireProperties.setProperty("name", "DataGemFireRestApplication");
+        gemfireProperties.setProperty("name", "DataGemFireAccessApplication");
         gemfireProperties.setProperty("mcast-port", "0");
         gemfireProperties.setProperty("log-level", "config");
         return gemfireProperties;
