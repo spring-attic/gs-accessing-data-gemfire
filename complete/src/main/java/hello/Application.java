@@ -22,7 +22,7 @@ public class Application implements CommandLineRunner {
     @Bean
     Properties gemfireProperties() {
         Properties gemfireProperties = new Properties();
-        gemfireProperties.setProperty("name", "DataGemFireAccessApplication");
+        gemfireProperties.setProperty("name", "DataGemFireApplication");
         gemfireProperties.setProperty("mcast-port", "0");
         gemfireProperties.setProperty("log-level", "config");
         return gemfireProperties;
@@ -31,13 +31,13 @@ public class Application implements CommandLineRunner {
     @Bean
     CacheFactoryBean gemfireCache() {
         CacheFactoryBean gemfireCache = new CacheFactoryBean();
+        gemfireCache.setClose(true);
         gemfireCache.setProperties(gemfireProperties());
-        gemfireCache.setUseBeanFactoryLocator(false);
         return gemfireCache;
     }
 
     @Bean
-    LocalRegionFactoryBean<String, Person> localRegionFactory(final GemFireCache cache) {
+    LocalRegionFactoryBean<String, Person> helloRegion(final GemFireCache cache) {
         LocalRegionFactoryBean<String, Person> helloRegion = new LocalRegionFactoryBean<>();
         helloRegion.setCache(cache);
         helloRegion.setClose(false);
