@@ -58,7 +58,7 @@ To see how this works, create an interface that queries `Person` nodes.
 ----
 include::complete/src/main/java/hello/PersonRepository.java[]
 ----
-    
+
 `PersonRepository` extends the `CrudRepository` interface and plugs in the type of values and keys it works with: `Person` and `String`. Out-of-the-box, this interface comes with many operations, including standard CRUD (create-read-update-delete).
 
 You can define other queries as needed by simply declaring their method signature. In this case, you add `findByName`, which essentially seeks nodes of type `Person` and find the one that matches on `name`.
@@ -105,7 +105,7 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_with_both.adoc[]
 
-    
+
 You should see something like this (with other stuff like queries as well):
 ....
 Before linking up with GemFire...
@@ -127,5 +127,13 @@ Teens (between 12 and 20):
 == Summary
 Congratulations! You set up an embedded GemFire server, stored simple entities, and developed quick queries.
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc[]
+== See Also
 
+The following guides may also be helpful:
+
+* https://spring.io/guides/gs/accessing-data-jpa/[Accessing Data with JPA]
+* https://spring.io/guides/gs/accessing-data-mongodb/[Accessing Data with MongoDB]
+* https://spring.io/guides/gs/accessing-data-mysql/[Accessing data with MySQL]
+* https://spring.io/guides/gs/accessing-data-neo4j/[Accessing Data with Neo4j]
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc[]
