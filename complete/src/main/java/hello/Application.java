@@ -1,94 +1,63 @@
 package hello;
 
-import java.io.IOException;
-import java.util.Properties;
+import static java.util.Arrays.asList;
+import static java.util.stream.StreamSupport.stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
+import java.io.IOException;
+
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.gemfire.CacheFactoryBean;
-import org.springframework.data.gemfire.LocalRegionFactoryBean;
+import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
+import org.springframework.data.gemfire.config.annotation.PeerCacheApplication;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 
-import com.gemstone.gemfire.cache.GemFireCache;
-
-@Configuration
+@PeerCacheApplication(name = "DataGemFireApplication", logLevel = "error")
+@EnableEntityDefinedRegions
 @EnableGemfireRepositories
 @SuppressWarnings("unused")
-public class Application implements CommandLineRunner {
-
-    @Bean
-    Properties gemfireProperties() {
-        Properties gemfireProperties = new Properties();
-        gemfireProperties.setProperty("name", "DataGemFireApplication");
-        gemfireProperties.setProperty("mcast-port", "0");
-        gemfireProperties.setProperty("log-level", "config");
-        return gemfireProperties;
-    }
-
-    @Bean
-    CacheFactoryBean gemfireCache() {
-        CacheFactoryBean gemfireCache = new CacheFactoryBean();
-        gemfireCache.setClose(true);
-        gemfireCache.setProperties(gemfireProperties());
-        return gemfireCache;
-    }
-
-    @Bean
-    LocalRegionFactoryBean<String, Person> helloRegion(final GemFireCache cache) {
-        LocalRegionFactoryBean<String, Person> helloRegion = new LocalRegionFactoryBean<>();
-        helloRegion.setCache(cache);
-        helloRegion.setClose(false);
-        helloRegion.setName("hello");
-        helloRegion.setPersistent(false);
-        return helloRegion;
-    }
-
-    @Autowired
-    PersonRepository personRepository;
-
-    @Override
-    public void run(String... strings) throws Exception {
-        Person alice = new Person("Alice", 40);
-        Person bob = new Person("Baby Bob", 1);
-        Person carol = new Person("Teen Carol", 13);
-
-        System.out.println("Before linking up with Gemfire...");
-        for (Person person : new Person[] { alice, bob, carol }) {
-            System.out.println("\t" + person);
-        }
-
-        personRepository.save(alice);
-        personRepository.save(bob);
-        personRepository.save(carol);
-
-        System.out.println("Lookup each person by name...");
-        for (String name : new String[] { alice.name, bob.name, carol.name }) {
-            System.out.println("\t" + personRepository.findByName(name));
-        }
-
-        System.out.println("Adults (over 18):");
-        for (Person person : personRepository.findByAgeGreaterThan(18)) {
-            System.out.println("\t" + person);
-        }
-
-        System.out.println("Babies (less than 5):");
-        for (Person person : personRepository.findByAgeLessThan(5)) {
-            System.out.println("\t" + person);
-        }
-
-        System.out.println("Teens (between 12 and 20):");
-        for (Person person : personRepository.findByAgeGreaterThanAndAgeLessThan(12, 20)) {
-            System.out.println("\t" + person);
-        }
-    }
+public class Application {
 
     public static void main(String[] args) throws IOException {
-        SpringApplication application = new SpringApplication(Application.class);
-        application.setWebEnvironment(false);
-        application.run(args);
+        new SpringApplicationBuilder(Application.class).web(false).run(args);
     }
 
+    @Bean
+    ApplicationRunner run(PersonRepository personRepository) {
+
+        return args -> {
+
+            Person alice = new Person("Alice", 40);
+            Person bob = new Person("Baby Bob", 1);
+            Person carol = new Person("Teen Carol", 13);
+
+            System.out.println("Before accessing data in GemFire...");
+
+            asList(alice, bob, carol).forEach(person -> System.out.println("\t" + person));
+
+            personRepository.save(alice);
+            personRepository.save(bob);
+            personRepository.save(carol);
+
+            System.out.println("Lookup each person by name...");
+
+            asList(alice.getName(), bob.getName(), carol.getName())
+              .forEach(name -> System.out.println("\t" + personRepository.findByName(name)));
+
+            System.out.println("Adults (over 18):");
+
+            stream(personRepository.findByAgeGreaterThan(18).spliterator(), false)
+              .forEach(person -> System.out.println("\t" + person));
+
+            System.out.println("Babies (less than 5):");
+
+            stream(personRepository.findByAgeLessThan(5).spliterator(), false)
+              .forEach(person -> System.out.println("\t" + person));
+
+            System.out.println("Teens (between 12 and 20):");
+
+            stream(personRepository.findByAgeGreaterThanAndAgeLessThan(12, 20).spliterator(), false)
+              .forEach(person -> System.out.println("\t" + person));
+        };
+    }
 }
