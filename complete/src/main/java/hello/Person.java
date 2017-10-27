@@ -2,14 +2,19 @@ package hello;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.gemfire.mapping.Region;
+import org.springframework.data.gemfire.mapping.annotation.LocalRegion;
 
-@Region("hello")
+import lombok.Getter;
+
+@LocalRegion("People")
 public class Person {
 
     @Id
-    public String name;
-    public int age;
+    @Getter
+    private final String name;
+
+    @Getter
+    private final int age;
 
     @PersistenceConstructor
     public Person(String name, int age) {
@@ -19,22 +24,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return name + " is " + age + " years old.";
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
+        return String.format("%s is %d years old", name, age);
     }
 }

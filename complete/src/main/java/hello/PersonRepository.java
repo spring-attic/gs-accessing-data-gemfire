@@ -10,5 +10,6 @@ public interface PersonRepository extends CrudRepository<Person, String> {
 
     Iterable<Person> findByAgeLessThan(int age);
 
-    Iterable<Person> findByAgeGreaterThanAndAgeLessThan(int age1, int age2);
+    Iterable<Person> findByAgeGreaterThanAndAgeLessThan(int greaterThanAge, int lessThanAge);
+
 }
