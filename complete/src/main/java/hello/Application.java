@@ -14,7 +14,7 @@ import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 
-@ClientCacheApplication(name = "DataGemFireApplication", logLevel = "config")
+@ClientCacheApplication(name = "DataGemFireApplication", logLevel = "error")
 @EnableGemfireRepositories
 public class Application {
 
