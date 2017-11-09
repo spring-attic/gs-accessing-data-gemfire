@@ -5,21 +5,33 @@ import static java.util.stream.StreamSupport.stream;
 
 import java.io.IOException;
 
+import org.apache.geode.cache.GemFireCache;
+import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
-import org.springframework.data.gemfire.config.annotation.PeerCacheApplication;
+import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
+import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 
-@PeerCacheApplication(name = "DataGemFireApplication", logLevel = "error")
-@EnableEntityDefinedRegions
+@ClientCacheApplication(name = "DataGemFireApplication", logLevel = "config")
 @EnableGemfireRepositories
-@SuppressWarnings("unused")
 public class Application {
 
     public static void main(String[] args) throws IOException {
-        new SpringApplicationBuilder(Application.class).web(false).run(args);
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Bean("People")
+    public ClientRegionFactoryBean<String, Person> peopleRegion(GemFireCache gemfireCache) {
+
+        ClientRegionFactoryBean<String, Person> peopleRegion = new ClientRegionFactoryBean<>();
+
+        peopleRegion.setCache(gemfireCache);
+        peopleRegion.setClose(false);
+        peopleRegion.setShortcut(ClientRegionShortcut.LOCAL);
+
+        return peopleRegion;
     }
 
     @Bean
@@ -35,6 +47,8 @@ public class Application {
 
             asList(alice, bob, carol).forEach(person -> System.out.println("\t" + person));
 
+            System.out.println("Save Alice, Bob and Carol to GemFire...");
+
             personRepository.save(alice);
             personRepository.save(bob);
             personRepository.save(carol);
@@ -44,17 +58,17 @@ public class Application {
             asList(alice.getName(), bob.getName(), carol.getName())
               .forEach(name -> System.out.println("\t" + personRepository.findByName(name)));
 
-            System.out.println("Adults (over 18):");
+            System.out.println("Query adults (over 18):");
 
             stream(personRepository.findByAgeGreaterThan(18).spliterator(), false)
               .forEach(person -> System.out.println("\t" + person));
 
-            System.out.println("Babies (less than 5):");
+            System.out.println("Query babies (less than 5):");
 
             stream(personRepository.findByAgeLessThan(5).spliterator(), false)
               .forEach(person -> System.out.println("\t" + person));
 
-            System.out.println("Teens (between 12 and 20):");
+            System.out.println("Query teens (between 12 and 20):");
 
             stream(personRepository.findByAgeGreaterThanAndAgeLessThan(12, 20).spliterator(), false)
               .forEach(person -> System.out.println("\t" + person));

@@ -1,13 +1,15 @@
 package hello;
 
+import java.io.Serializable;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.gemfire.mapping.annotation.LocalRegion;
+import org.springframework.data.gemfire.mapping.annotation.Region;
 
 import lombok.Getter;
 
-@LocalRegion("People")
-public class Person {
+@Region(value = "People")
+public class Person implements Serializable {
 
     @Id
     @Getter
@@ -24,6 +26,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return String.format("%s is %d years old", name, age);
+        return String.format("%s is %d year(s) old", name, age);
     }
 }

@@ -13,6 +13,7 @@ This guide walks you through the process of building an application with GemFire
 
 You will use the powerful Spring Data GemFire library to store and retrieve link:/understanding/POJO[POJOs].
 
+[[setup]]
 == What you'll need
 
 :java_version: 1.8
@@ -20,19 +21,24 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc[]
 
-
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-gradle.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-maven.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-sts.adoc[]
 
-
 [[initial]]
 == Define a simple entity
-GemFire is a data fabric. It maps data into regions, and it's possible to configure distributed regions across multiple nodes. However, for this guide you use a local region so you don't have to set up anything extra.
 
-In this example, you store Person objects with a few annotations.
+Pivotal GemFire is a _In-Memory Data Grid_ (IMDG) that maps data to Regions.  It is possible to configure
+distributed Regions that partition and replicate data across multiple nodes in a cluster. However, in this guide,
+you will be using a `LOCAL` Region so you don't have to set up anything extra, such as an entire cluster of servers.
+
+GemFire is a Key/Value store and a Region implements the `java.util.concurrent.ConcurrentMap` interface.  Though
+you can treat a Region like a `java.util.Map`, it is quite a bit more sophisticated than just a simple Java `Map`
+given data is distributed, replicated and generally managed inside the Region.
+
+In this example, you store `Person` objects in GemFire (a Region) using only a few annotations.
 
 `src/main/java/hello/Person.java`
 [source,java]
@@ -40,18 +46,29 @@ In this example, you store Person objects with a few annotations.
 include::complete/src/main/java/hello/Person.java[]
 ----
 
-Here you have a `Person` class with two attributes, the `name` and the `age`. You also have a single constructor to populate the entities when creating a new instance.
+Here you have a `Person` class with two fields, `name` and `age`. You also have a single, persistent constructor to
+populate the entities when creating a new instance. The class uses https://projectlombok.org/[Project Lombok]
+to simplify the implementation.
 
-Notice that this class is annotated `@Region("hello")`. When GemFire stores the class, a new entry is created inside that specific region. This class also has `name` marked with `@Id`. This is for internal usage to help GemFire track the data.
+Notice that this class is annotated with `@Region("People")`. When GemFire stores an instance of this class, a new entry
+is created inside the "People" Region. This class also marks the `name` field with `@Id`. This signifies the identifier
+used to identify and track the `Person` data inside GemFire.  Essentially, the `@Id` annotated field (e.g. `name`)
+is the key and the `Person` instance is the value in the key/value entry.  There is no automated key generation in
+GemFire so you must set the id (i.e. `name`) prior to persisting the entity to GemFire.
 
 The next important piece is the person's age. Later in this guide, you will use it to fashion some queries.
 
-The convenient `toString()` method will print out the person's name and age.
+The overridden `toString()` method will print out the person's name and age.
 
+[[queries]]
 == Create simple queries
-Spring Data GemFire focuses on storing data in GemFire. It also inherits powerful functionality from the Spring Data Commons project, such as the ability to derive queries. Essentially, you don't have to learn the query language of GemFire; you can simply write a handful of methods and the queries are written for you.
 
-To see how this works, create an interface that queries `Person` nodes.
+_Spring Data GemFire_ focuses on storing and accessing data in GemFire. It also inherits powerful functionality
+from the _Spring Data Commons_ project, such as the ability to derive queries. Essentially, you don't have to learn
+the query language of GemFire (OQL); you can simply write a handful of methods and the queries are written for you
+by the framework.
+
+To see how this works, create an interface that queries `Person` objects stored in GemFire.
 
 `src/main/java/hello/PersonRepository.java`
 [source,java]
@@ -59,15 +76,19 @@ To see how this works, create an interface that queries `Person` nodes.
 include::complete/src/main/java/hello/PersonRepository.java[]
 ----
 
-`PersonRepository` extends the `CrudRepository` interface and plugs in the type of values and keys it works with: `Person` and `String`. Out-of-the-box, this interface comes with many operations, including standard CRUD (create-read-update-delete).
+`PersonRepository` extends the `CrudRepository` interface from _Spring Data Commons_ and specifies types for
+the generic type parameters for both the value and the id (key) that the _Repository_ works with, i.e. `Person`
+and `String`, respectively. Out-of-the-box, this interface comes with many operations, including basic CRUD
+(CREATE, READ UPDATE, DELETE) and simple query (e.g. `findById(..)`) data access operations.
 
-You can define other queries as needed by simply declaring their method signature. In this case, you add `findByName`, which essentially seeks nodes of type `Person` and find the one that matches on `name`.
+You can define other queries as needed by simply declaring their method signature. In this case, you add `findByName`,
+which essentially searches for objects of type `Person` and finds one that matches on `name`.
 
 You also have:
 
 - `findByAgeGreaterThan` to find people above a certain age
 - `findByAgeLessThan` to find people below a certain age
-- `findByAgeGreaterThanAndAgeLessThan` to find people in a certain range
+- `findByAgeGreaterThanAndAgeLessThan` to find people in a certain age range
 
 Let's wire this up and see what it looks like!
 
@@ -82,29 +103,62 @@ include::complete/src/main/java/hello/Application.java[]
 
 In the configuration, you need to add the `@EnableGemFireRepositories` annotation.
 
-* By default, `@EnableGemfireRepostories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces. Use it's `basePackageClasses=MyRepository.class` to safely tell Spring Data GemFire to scan a different root package by type.
+* By default, `@EnableGemfireRepositories` will scan the current package for any interfaces that extend one
+of Spring Data's _Repository_ interfaces. Use it's `basePackageClasses = MyRepository.class` to safely tell
+_Spring Data GemFire_ to scan a different root package by type for application-specific _Repository_ extensions.
 
-A GemFire cache is required, to store all data. For that, you have Spring Data GemFire's convenient `CacheFactoryBean`.
+A GemFire cache containing 1 or more Regions is required to store all the data. For that, you use 1
+of _Spring Data GemFire's_ convenient configuration-based annotations: `@ClientCacheApplication`, `@PeerCacheApplication
+or `@CacheServerApplication`.
 
-NOTE: In this guide, the cache is created locally using built-in components and an evaluation license. For a production solution, Spring recommends the production version of GemFire, where you can create distributed caches and regions across multiple nodes.
+GemFire supports different cache topologies like client/server, peer-to-peer (p2p) and even WAN arrangements.  In p2p,
+a peer cache instance is embedded in the application and your application would have the ability to participate
+in a cluster as peer cache member.  However, your application is subject to all the constraints of being a peer member
+in the cluster, so this is not as commonly used as, say, the client/server topology.
 
-Remember how you tagged `Person` to be stored in `@Region("hello")`? You define that region here with `LocalRegionFactoryBean<String, Person>`. You need to inject an instance of the cache you just defined while also naming it `hello`.
+In our case, we will be using `@ClientCacheApplication` to create a "client" cache instance, which has the ability to
+connect to and communicate with a cluster of servers.  However, to keep things simple, the client will just store
+data locally using a `LOCAL`, client Region, without the need to setup or run any servers.
+
+NOTE: Spring recommends the production, enterprise edition that is https://pivotal.io/pivotal-gemfire[Pivotal GemFire],
+where you can create distributed caches and Regions across multiple nodes in cluster.  Alternatively, you can also use
+the open source version, http://geode.apache.org/[Apache Geode], and get support from the Apache Geode community.
+
+Now, remember how you tagged `Person` to be stored in a Region called "People" using the SDG mapping annotation,
+`@Region("People")`? You define that Region here using the `ClientRegionFactoryBean<String, Person>` bean definition.
+You need to inject an instance of the cache you just defined while also naming it "_People_".
+
+NOTE: A GemFire cache instance (whether a peer or client) is just a container for Regions, which store your data.
+You can think of the cache as a schema in an RDBMS and Regions as the tables.  However, a cache also performs other
+administrative functions to control and manage all your Regions.
 
 NOTE: The types are `<String, Person>`, matching the key type (`String`) with the value type (`Person`).
 
-The `public static void main` uses Spring Boot's `SpringApplication.run()` to launch the application and invoke the `CommandLineRunner` that builds the relationships.
+The `public static void main` method uses _Spring Boot's_ `SpringApplication.run()` to launch the application
+and invoke the `ApplicationRunner` (another bean definition) that performs the data access operations on GemFire
+using the application's _Spring Data_ _Repository_.
 
-The application autowires an instance of `PersonRepository` that you just defined. Spring Data GemFire will dynamically create a concrete class that implements that interface and will plug in the needed query code to meet the interface's obligations. This repository instance is the used by the `run()` method to demonstrate the functionality.
+The application autowires an instance of `PersonRepository` that you just defined. _Spring Data GemFire_ will
+dynamically create a concrete class that implements this interface and plug in the needed query code to meet
+the interface's obligations. This _Repository_ instance is the used by the `run()` method to demonstrate
+the functionality.
 
 == Store and fetch data
-In this guide, you are creating three local `Person` s, **Alice**, **Baby Bob**, and **Teen Carol**. Initially, they only exist in memory. After creating them, you have to save them to GemFire.
+In this guide, you are creating three local `Person` objects, **Alice**, **Baby Bob**, and **Teen Carol**. Initially,
+they only exist in memory. After creating them, you have to save them to GemFire.
 
-Now you run several queries. The first looks up everyone by name. Then you execute a handful of queries to find adults, babies, and teens, all using the age attribute. With the logging turned up, you can see the queries Spring Data GemFire writes on your behalf.
+Now you run several queries. The first looks up everyone by name. Then you execute a handful of queries to find adults,
+babies, and teens, all using the age attribute. With the logging turned up, you can see the queries
+_Spring Data GemFire_ writes on your behalf.
+
+TIP: change the `@ClientCacheApplication` annotation `logLevel` attribute to "_config_" to see the GemFire OQL queries
+that are generated by SDG.  Because the query methods (e.g. `findByName`) are annotated with SDG's `@Trace` annotation,
+this turns on GemFire's OQL query tracing (query-level logging), which shows you the generated OQL, execution time,
+whether any GemFire Indexes were used by the query to gather the results, and the number of rows returned by the query.
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_mainhead.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_with_both.adoc[]
-
 
 You should see something like this (with other stuff like queries as well):
 ....
@@ -125,7 +179,7 @@ Teens (between 12 and 20):
 ....
 
 == Summary
-Congratulations! You set up an embedded GemFire server, stored simple entities, and developed quick queries.
+Congratulations! You set up an GemFire cache client, stored simple entities, and developed quick queries.
 
 == See Also
 
