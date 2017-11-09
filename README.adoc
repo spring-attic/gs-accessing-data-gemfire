@@ -101,7 +101,7 @@ Here you create an Application class with all the components.
 include::complete/src/main/java/hello/Application.java[]
 ----
 
-In the configuration, you need to add the `@EnableGemFireRepositories` annotation.
+In the configuration, you need to add the `@EnableGemfireRepositories` annotation.
 
 * By default, `@EnableGemfireRepositories` will scan the current package for any interfaces that extend one
 of Spring Data's _Repository_ interfaces. Use it's `basePackageClasses = MyRepository.class` to safely tell
