@@ -26,6 +26,6 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("%s is %d year(s) old", name, age);
+        return String.format("%s is %d years old", getName(), getAge());
     }
 }
