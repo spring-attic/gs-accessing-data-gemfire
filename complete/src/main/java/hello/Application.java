@@ -34,11 +34,11 @@ public class Application {
             Person bob = new Person("Baby Bob", 1);
             Person carol = new Person("Teen Carol", 13);
 
-            System.out.println("Before accessing data in GemFire...");
+            System.out.println("Before accessing data in Pivotal GemFire...");
 
             asList(alice, bob, carol).forEach(person -> System.out.println("\t" + person));
 
-            System.out.println("Saving Alice, Bob and Carol to GemFire...");
+            System.out.println("Saving Alice, Bob and Carol to Pivotal GemFire...");
 
             personRepository.save(alice);
             personRepository.save(bob);
