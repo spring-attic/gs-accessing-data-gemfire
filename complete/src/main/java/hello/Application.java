@@ -30,7 +30,7 @@ public class Application {
 
         return args -> {
 
-            Person alice = new Person("Alice", 40);
+            Person alice = new Person("Adult Alice", 40);
             Person bob = new Person("Baby Bob", 1);
             Person carol = new Person("Teen Carol", 13);
 
