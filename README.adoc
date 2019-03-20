@@ -119,7 +119,7 @@ data locally using a `LOCAL`, client Region, without the need to setup or run an
 
 NOTE: Spring recommends the production, enterprise edition that is https://pivotal.io/pivotal-gemfire[Pivotal GemFire],
 where you can create distributed caches and Regions across multiple nodes in cluster.  Alternatively, you can also use
-the open source version, http://geode.apache.org/[Apache Geode], and get support from the Apache Geode community.
+the open source version, https://geode.apache.org/[Apache Geode], and get support from the Apache Geode community.
 
 Now, remember how you tagged `Person` to be stored in a Region called "People" using the SDG mapping annotation,
 `@Region("People")`? You define that Region here using the `ClientRegionFactoryBean<String, Person>` bean definition.
