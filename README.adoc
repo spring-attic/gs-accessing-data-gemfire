@@ -37,7 +37,7 @@ given data is distributed, replicated and generally managed inside the Region.
 In this example, you store `Person` objects in Pivotal GemFire (a Region) using only a few annotations.
 
 `src/main/java/hello/Person.java`
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/hello/Person.java[]
 ----
@@ -67,7 +67,7 @@ and the queries are written for you by the framework.
 To see how this works, create an interface that queries `Person` objects stored in Pivotal GemFire.
 
 `src/main/java/hello/PersonRepository.java`
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/hello/PersonRepository.java[]
 ----
@@ -92,7 +92,7 @@ Let's wire this up and see what it looks like!
 Here you create an Application class with all the components.
 
 `src/main/java/hello/Application.java`
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/hello/Application.java[]
 ----

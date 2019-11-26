@@ -5,16 +5,16 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PersonRepository extends CrudRepository<Person, String> {
 
-    @Trace
-    Person findByName(String name);
+	@Trace
+	Person findByName(String name);
 
-    @Trace
-    Iterable<Person> findByAgeGreaterThan(int age);
+	@Trace
+	Iterable<Person> findByAgeGreaterThan(int age);
 
-    @Trace
-    Iterable<Person> findByAgeLessThan(int age);
+	@Trace
+	Iterable<Person> findByAgeLessThan(int age);
 
-    @Trace
-    Iterable<Person> findByAgeGreaterThanAndAgeLessThan(int greaterThanAge, int lessThanAge);
+	@Trace
+	Iterable<Person> findByAgeGreaterThanAndAgeLessThan(int greaterThanAge, int lessThanAge);
 
 }

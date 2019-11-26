@@ -11,21 +11,21 @@ import lombok.Getter;
 @Region(value = "People")
 public class Person implements Serializable {
 
-    @Id
-    @Getter
-    private final String name;
+	@Id
+	@Getter
+	private final String name;
 
-    @Getter
-    private final int age;
+	@Getter
+	private final int age;
 
-    @PersistenceConstructor
-    public Person(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
+	@PersistenceConstructor
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
 
-    @Override
-    public String toString() {
-        return String.format("%s is %d years old", getName(), getAge());
-    }
+	@Override
+	public String toString() {
+		return String.format("%s is %d years old", getName(), getAge());
+	}
 }
