@@ -35,7 +35,7 @@ public class Application {
 			Person bob = new Person("Baby Bob", 1);
 			Person carol = new Person("Teen Carol", 13);
 
-			System.out.println("Before accessing data in Pivotal GemFire...");
+			System.out.println("Before accessing data in Apache Geode...");
 
 			asList(alice, bob, carol).forEach(person -> System.out.println("\t" + person));
 
