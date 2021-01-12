@@ -4,11 +4,13 @@
 :project_id: gs-accessing-data-gemfire
 :apache-geode-name: Apache Geode
 
-This guide walks you through the process of building an application with {apache-geode-name}'s data management system.
+This guide walks you through the process of building an application the https://geode.apache.org/[{apache-geode-name}]
+data management system.
 
 == What you'll build
 
-You will use Spring Data for {apache-geode-name} to store and retrieve link:/understanding/POJO[POJOs].
+You will use https://spring.io/projects/spring-data-geode[Spring Data for {apache-geode-name}]
+to store and retrieve POJOs.
 
 [[setup]]
 == What you'll need
