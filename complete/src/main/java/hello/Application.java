@@ -3,9 +3,8 @@ package hello;
 import static java.util.Arrays.asList;
 import static java.util.stream.StreamSupport.stream;
 
-import java.io.IOException;
-
 import org.apache.geode.cache.client.ClientRegionShortcut;
+
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,13 +14,15 @@ import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedReg
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 
 @SpringBootApplication
-@ClientCacheApplication(name = "AccessingDataGemFireApplication", logLevel = "error")
-@EnableEntityDefinedRegions(basePackageClasses = Person.class,
-  clientRegionShortcut = ClientRegionShortcut.LOCAL)
+@ClientCacheApplication(name = "AccessingDataGemFireApplication")
+@EnableEntityDefinedRegions(
+	basePackageClasses = Person.class,
+	clientRegionShortcut = ClientRegionShortcut.LOCAL
+)
 @EnableGemfireRepositories
 public class Application {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
