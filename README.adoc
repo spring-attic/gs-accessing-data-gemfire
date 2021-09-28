@@ -27,7 +27,9 @@ For all Spring applications, you should start with the https://start.spring.io[S
 offers a fast way to pull in all the dependencies you need for an application and does a lot of the set up for you.
 This example needs Spring for Apache Geode dependency.
 
-To initialize the project:
+You can use this https://start.spring.io/#!type=maven-project&language=java&platformVersion=2.5.5&packaging=jar&jvmVersion=11&groupId=com.example&artifactId=accessing-data-gemfire&name=accessing-data-gemfire&description=Demo%20project%20for%20Spring%20Boot&packageName=com.example.accessing-data-gemfire&dependencies=geode[pre-initialized project] and click Generate to download a ZIP file. This project is configured to fit the examples in this tutorial.
+
+To manually initialize the project:
 
 . In a web browser, navigate to https://start.spring.io.
 This service pulls in all the dependencies you need for an application and does most of the setup for you.
