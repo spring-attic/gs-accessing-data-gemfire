@@ -4,6 +4,8 @@
 :project_id: gs-accessing-data-gemfire
 :apache-geode-name: Apache Geode
 
+# This repository is no longer maintained.
+
 This guide walks you through the process of building an application the https://geode.apache.org/[{apache-geode-name}]
 data management system.
 
